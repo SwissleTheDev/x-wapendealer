@@ -13,7 +13,6 @@ end
 -- // [ FUNCTIONS ] \\ --
 local function CheckJob(job)
     if not Swl.BlacklistedjobTable[job] then
-        print("AUTH")
         return true
     else
         return false
