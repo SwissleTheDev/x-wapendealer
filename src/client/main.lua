@@ -20,6 +20,87 @@ local function CheckJob(job)
     end
 end
 
+local function WapenMenu(elements)
+    lib.registerContext({
+        id = 'WeaponMenu',
+        title = 'WapenDealer',
+        menu = 'mainMenu',
+        options = elements
+    })
+    lib.showContext('WeaponMenu')
+end
+
+local function AmmoMenu(elements)
+    lib.registerContext({
+        id = 'AmmmoMenu',
+        title = 'Munutie inkoop',
+        menu = 'mainMenu',
+        options = elements
+    })
+    lib.showContext('AmmmoMenu')
+end
+
+
+local function openMenu()
+    local WapenInkoop = {}
+    local MunutieInkoop = {}
+    for k, v in pairs(Swl.ItemsTable['weapons']) do
+        WapenInkoop[#WapenInkoop+1] = {
+            title = v.Label,
+            description = 'Klik hier om aan een ' .. v.Label .. ' te kopen voor €' .. v.Price .. '',
+            icon = 'fa-solid fa-gun',
+            serverEvent = 'swl-wapendealer:server:buy',
+            args = {
+                weapon = k,
+                count = v.Count,
+                price = v.Price
+            }
+        }
+    end
+
+    for k, v in pairs(Swl.ItemsTable['ammo']) do
+        MunutieInkoop[#MunutieInkoop+1] = {
+            title = '' .. v.Count .. ' ' .. '|' .. ' ' .. v.Label .. '',
+            description = 'Klik hier om aan een ' .. v.Label .. ' te kopen voor €' .. v.Price .. '',
+            icon = 'fa-solid fa-gun',
+            serverEvent = 'swl-wapendealer:server:buy',
+            args = {
+                weapon = k,
+                count = v.Count,
+                price = v.Price
+            }
+        }
+    end
+
+
+    local elements = {
+        {
+            title = 'Wapen inkoop',
+            description = 'je kan hier wapen kopen?',
+            icon = 'fa-solid fa-gun',
+            OnSelect = function ()
+                WapenMenu(WapenInkoop)
+            end
+        },
+        {
+            title = 'Munutie inkoop',
+            description = 'Zou je hier kogels kunnnen kopen?',
+            icon = 'fa-solid fa-gun',
+            OnSelect = function ()
+                AmmoMenu(MunutieInkoop)
+            end
+        }
+    }
+
+    lib.registerContext({
+        id = 'mainMenu',
+        title = 'Wapendealer ofz?',
+        options = elements
+    })
+    lib.showContext('mainMenu')
+end
+
+
 -- // [ Framework ] \\ --
 if Swl.Framework == 'ESX' then
     RegisterNetEvent('esx:playerLoaded')
@@ -108,7 +189,7 @@ end
 
 function inside(self)
     if IsControlJustReleased(0, 38) and allowed then
-        TriggerServerEvent('swl-wapendealer:server:requestWapenMenu')
+        OpenMenu()
     end
 end
 
@@ -120,35 +201,3 @@ local sphere = lib.zones.sphere({
     onEnter = onEnter,
     onExit = onExit
 })
-
--- [[ EVENTS ]] -- 
-RegisterNetEvent('swl-wapendealer:client:mainMenu', function(elements)
-    lib.registerContext({
-        id = 'mainMenu',
-        title = 'Wapendealer ofz?',
-        options = elements
-    })
-    lib.showContext('mainMenu')
-end)
-
-RegisterNetEvent('swl-wapendealer:client:WeaponMenu', function(args)
-    local elements = args.elements
-    lib.registerContext({
-        id = 'WeaponMenu',
-        title = 'WapenDealer',
-        menu = 'mainMenu',
-        options = elements
-    })
-    lib.showContext('WeaponMenu')
-end)
-
-RegisterNetEvent('swl-wapendealer:client:AmmoMenu', function(args)
-    local elements = args.elements
-    lib.registerContext({
-        id = 'AmmmoMenu',
-        title = 'Munutie inkoop',
-        menu = 'mainMenu',
-        options = elements
-    })
-    lib.showContext('AmmmoMenu')
-end)

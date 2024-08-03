@@ -20,68 +20,6 @@ lib.callback.register('swl-wapendealer:server:get:config', function()
 end)
 
 -- // [ EVENTS ] \\ --
-RegisterServerEvent('swl-wapendealer:server:requestWapenMenu', function()
-    local WapenInkoop = {}
-    local MunutieInkoop = {}
-
-    local dist = #(GetEntityCoords(GetPlayerPed(source)) - Swl.Location)
-    if dist > 2 then
-        return DropPlayer(source, 'Tried to exploied "swl-wapendealer:server:requestWapenMenu"')
-    end
-
-    for k, v in pairs(Swl.ItemsTable['weapons']) do
-        WapenInkoop[#WapenInkoop+1] = {
-            title = v.Label,
-            description = 'Klik hier om aan een ' .. v.Label .. ' te kopen voor €' .. v.Price .. '',
-            icon = 'fa-solid fa-gun',
-            serverEvent = 'swl-wapendealer:server:buy',
-            args = {
-                weapon = k,
-                count = v.Count,
-                price = v.Price
-            }
-        }
-    end
-
-    for k, v in pairs(Swl.ItemsTable['ammo']) do
-        MunutieInkoop[#MunutieInkoop+1] = {
-            title = '' .. v.Count .. ' ' .. '|' .. ' ' .. v.Label .. '',
-            description = 'Klik hier om aan een ' .. v.Label .. ' te kopen voor €' .. v.Price .. '',
-            icon = 'fa-solid fa-gun',
-            serverEvent = 'swl-wapendealer:server:buy',
-            args = {
-                weapon = k,
-                count = v.Count,
-                price = v.Price
-            }
-        }
-    end
-
-
-    local elements = {
-        {
-            title = 'Wapen inkoop',
-            description = 'je kan hier wapen kopen?',
-            icon = 'fa-solid fa-gun',
-            event = 'swl-wapendealer:client:WeaponMenu',
-            args = {
-                elements = WapenInkoop
-            },
-        },
-        {
-            title = 'Munutie inkoop',
-            description = 'Zou je hier kogels kunnnen kopen?',
-            icon = 'fa-solid fa-gun',
-            event = 'swl-wapendealer:client:AmmoMenu',
-            args = {
-                elements = MunutieInkoop
-            },
-        }
-    }
-
-    TriggerClientEvent('swl-wapendealer:client:mainMenu', source, elements)
-end)
-
 RegisterServerEvent('swl-wapendealer:server:buy', function(args)
     Player = nil
     if Swl.Framework == 'ESX' then
@@ -121,7 +59,7 @@ RegisterServerEvent('swl-wapendealer:server:buy', function(args)
     if Balance >= tonumber(price) or Balance == tonumber(price) then
         if Swl.Framework == 'ESX' then
             Player.removeAccountMoney(Swl.MoneyType, price)
-            exports.ox_inventory:AddItem(Player.source, Weapon, count)
+            exports.ox_inventory:AddItem(source, Weapon, count)
         elseif Swl.Framework == 'QB' then
             exports['qb-inventory']:RemoveItem(source, Weapon, count, 1, false)
             exports['qb-banking']:AddMoney(Swl.MoneyType, price, 'je hebt een ' .. Weapon ' ' .. count .. ' keer gekocht')
@@ -129,7 +67,7 @@ RegisterServerEvent('swl-wapendealer:server:buy', function(args)
             print('' .. GetCurrentGameName() .. '' .. 'Please enter a valid Framework type ESX or QB')
         end
         if Swl.Notify == 'OX' then
-            TriggerClientEvent('ox_lib:notify', Player.source, {
+            TriggerClientEvent('ox_lib:notify', source, {
                 title = 'Wapen dealer',
                 description = 'Je hebt successvol een ' .. Weapon .. ' gekocht voor ' .. price .. '€',
                 type = 'success'
@@ -143,7 +81,7 @@ RegisterServerEvent('swl-wapendealer:server:buy', function(args)
         end
     else
         if Swl.Notify == 'OX' then
-            TriggerClientEvent('ox_lib:notify', Player.source, {
+            TriggerClientEvent('ox_lib:notify', source, {
                 title = 'Wapen dealer',
                 description = 'Je hebt niet genoeg geld!',
                 type = 'error'
