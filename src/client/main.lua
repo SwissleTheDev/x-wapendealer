@@ -188,7 +188,7 @@ function onExit(self)
 end
 
 function inside(self)
-    if IsControlJustReleased(0, 38) and allowed then
+    if IsControlJustReleased(0, 38) and Allowed then
         OpenMenu()
     end
 end
