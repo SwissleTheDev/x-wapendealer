@@ -19,27 +19,6 @@ local function CheckJob(job)
     end
 end
 
-local function WapenMenu(elements)
-    lib.registerContext({
-        id = 'WeaponMenu',
-        title = 'WapenDealer',
-        menu = 'mainMenu',
-        options = elements
-    })
-    lib.showContext('WeaponMenu')
-end
-
-local function AmmoMenu(elements)
-    lib.registerContext({
-        id = 'AmmmoMenu',
-        title = 'Munutie inkoop',
-        menu = 'mainMenu',
-        options = elements
-    })
-    lib.showContext('AmmmoMenu')
-end
-
-
 local function OpenMenu()
     local WapenInkoop = {}
     local MunutieInkoop = {}
@@ -77,16 +56,28 @@ local function OpenMenu()
             title = 'Wapen inkoop',
             description = 'je kan hier wapen kopen?',
             icon = 'fa-solid fa-gun',
-            OnSelect = function ()
-                WapenMenu(WapenInkoop)
+            onSelect = function()
+                lib.registerContext({
+                    id = 'WeaponMenu',
+                    title = 'WapenDealer',
+                    menu = 'mainMenu',
+                    options = WapenInkoop
+                })
+                lib.showContext('WeaponMenu')
             end
         },
         {
             title = 'Munutie inkoop',
             description = 'Zou je hier kogels kunnnen kopen?',
             icon = 'fa-solid fa-gun',
-            OnSelect = function ()
-                AmmoMenu(MunutieInkoop)
+            onSelect = function()
+                lib.registerContext({
+                    id = 'AmmmoMenu',
+                    title = 'Munutie inkoop',
+                    menu = 'mainMenu',
+                    options = MunutieInkoop
+                })
+                lib.showContext('AmmmoMenu')
             end
         }
     }
