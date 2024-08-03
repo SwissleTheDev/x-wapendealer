@@ -40,7 +40,7 @@ local function AmmoMenu(elements)
 end
 
 
-local function openMenu()
+local function OpenMenu()
     local WapenInkoop = {}
     local MunutieInkoop = {}
     for k, v in pairs(Swl.ItemsTable['weapons']) do
