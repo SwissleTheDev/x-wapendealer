@@ -53,7 +53,7 @@ RegisterServerEvent('swl-wapendealer:server:buy', function(args)
     end
 
     local dist = #(GetEntityCoords(GetPlayerPed(Player.source)) - Swl.Location)
-    if dist > 2 then
+    if dist > 20 then
         return DropPlayer(source, locale('dropmessage', "swl-wapendealer:server:buy"))
     end
 
