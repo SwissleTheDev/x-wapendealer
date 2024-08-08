@@ -168,7 +168,7 @@ if Swl.Npc then
                 icon = 'fa-solid fa-money-bills',
                 label = locale('target'),
                 onSelect = function()
-                    OpenMarket()
+                    OpenMenu()
                 end
             }
         })
