@@ -160,6 +160,7 @@ if Swl.Npc then
     SetEntityHeading(Ped, Swl.Heading)
     FreezeEntityPosition(Ped, true)
     SetEntityInvincible(Ped, true)
+    SetBlockingOfNonTemporaryEvents(Ped, true)
 
     if Swl.Interaction == 'ox_target' then
         exports.ox_target:addLocalEntity(Ped, {
