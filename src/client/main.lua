@@ -149,7 +149,36 @@ CreateThread(function()
         EndTextCommandSetBlipName(Blip)
     end
 end)
+if Swl.Npc then
+    RequestModel(GetHashKey("a_m_y_business_03"))
+    while not HasModelLoaded(GetHashKey("a_m_y_business_03")) do
+        Wait(1)
+    end
 
+     Ped = CreatePed(4, 0xA1435105, Swl.Location.x, Swl.Location.y, Swl.Location.z, Swl.Heading, false, true)
+
+    SetEntityHeading(Ped, Swl.Heading)
+    FreezeEntityPosition(Ped, true)
+    SetEntityInvincible(Ped, true)
+
+    if Swl.Interaction == 'ox_target' then
+        exports.ox_target:addLocalEntity(Ped, {
+            {
+                name = 'Wapendealer',
+                icon = 'fa-solid fa-money-bills',
+                label = locale('target'),
+                onSelect = function()
+                    OpenMarket()
+                end
+            }
+        })
+    elseif Swl.Interaction == 'qb-target' then
+        
+        print("qb-target gets soon supported!!")
+    else
+        print(locale('error-interaction'))
+    end
+else
 
 -- // [ Marker ] \\ --
 local showing = false
@@ -193,3 +222,15 @@ local sphere = lib.zones.sphere({
     onEnter = onEnter,
     onExit = onExit
 })
+end
+
+-- // [[ CFX ]] -- 
+
+AddEventHandler('onResourceStop', function(resource)
+	if resource ~= GetCurrentResourceName() then return end
+
+    if Ped then 
+            DeletePed(Ped)
+    end
+end)
+

@@ -22,6 +22,11 @@ Swl.blip = {
 Swl.MoneyType = 'black_money' -- money / black_money / bank
 
 Swl.Location = vec3(-718.1540, -1448.5582, 5.0026)
+Swl.Heading = 339.8603
+
+Swl.Npc = true
+Swl.Interaction  = 'ox_target' -- ox_target, qb-target
+
 
 Swl.ItemsTable = {
     ['weapons'] = {

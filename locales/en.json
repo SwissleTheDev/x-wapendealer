@@ -17,6 +17,6 @@
     "qb-banking_desc": "%s %s keer verkocht aan de blackmarket",
     "item_bought": "je hebt succesvol %s gekocht voor %s€",
     "qb-banking_buy_decs": "je hebt succesvol %s gekocht voor %s€",
-    "target": "Open blackmarket",
+    "target": "Open Wapendealer",
     "error-interaction": "Please enter a valid Interaction type ox_target or qb-target"
 }
