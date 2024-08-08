@@ -2,13 +2,14 @@
 Allowed = false
 PlayerLoaded = false
 PlayerData = ESX.PlayerData
+lib.locale()
 if Swl.Framework == 'ESX' then
     local PlayerData = {}
     ESX = exports["" .. Swl.FrameworkResource .. ""]:getSharedObject()
 elseif Swl.Framework == 'QB' then
     QBCore = exports["" .. Swl.FrameworkResource .. ""]:GetCoreObject()
 else
-    print('' .. GetCurrentGameName() .. '' .. 'Please enter a valid Framework type ESX or QB')
+    print('' .. GetCurrentGameName() .. '' .. locale('error_framework'))
 end
 
 -- // [ FUNCTIONS ] \\ --
@@ -26,7 +27,7 @@ local function OpenMenu()
     for k, v in pairs(Swl.ItemsTable['weapons']) do
         WapenInkoop[#WapenInkoop+1] = {
             title = v.Label,
-            description = 'Klik hier om aan een ' .. v.Label .. ' te kopen voor €' .. v.Price .. '',
+            description = locale('description', v.Label, v.Price ),
             icon = 'fa-solid fa-gun',
             serverEvent = 'swl-wapendealer:server:buy',
             args = {
@@ -40,7 +41,7 @@ local function OpenMenu()
     for k, v in pairs(Swl.ItemsTable['ammo']) do
         MunutieInkoop[#MunutieInkoop+1] = {
             title = '' .. v.Count .. ' ' .. '|' .. ' ' .. v.Label .. '',
-            description = 'Klik hier om aan een ' .. v.Label .. ' te kopen voor €' .. v.Price .. '',
+            description = locale('description', v.Label, v.Price ),
             icon = 'fa-solid fa-gun',
             serverEvent = 'swl-wapendealer:server:buy',
             args = {
@@ -54,13 +55,13 @@ local function OpenMenu()
 
     local elements = {
         {
-            title = 'Wapen inkoop',
-            description = 'je kan hier wapen kopen?',
+            title = locale('buy_weapons'),
+            description = locale('buy_weapons_desc'),
             icon = 'fa-solid fa-gun',
             onSelect = function()
                 lib.registerContext({
                     id = 'WeaponMenu',
-                    title = 'WapenDealer',
+                    title = locale('weapondealer'),
                     menu = 'mainMenu',
                     options = WapenInkoop
                 })
@@ -68,13 +69,13 @@ local function OpenMenu()
             end
         },
         {
-            title = 'Munutie inkoop',
-            description = 'Zou je hier kogels kunnnen kopen?',
+            title = locale('buy_ammo'),
+            description = locale('buy_ammo_desc'),
             icon = 'fa-solid fa-gun',
             onSelect = function()
                 lib.registerContext({
                     id = 'AmmmoMenu',
-                    title = 'Munutie inkoop',
+                    title = locale('munition_buy'),
                     menu = 'mainMenu',
                     options = MunutieInkoop
                 })
@@ -85,7 +86,7 @@ local function OpenMenu()
 
     lib.registerContext({
         id = 'mainMenu',
-        title = 'Wapendealer ofz?',
+        title = locale('title'),
         options = elements
     })
     lib.showContext('mainMenu')
@@ -125,7 +126,7 @@ elseif Swl.Framework == 'QB' then
         end
     end)
 else
-    print('' .. GetCurrentGameName() .. '' .. 'Please enter a valid Framework type ESX or QB')
+    print('' .. GetCurrentGameName() .. '' .. locale('error_framework'))
 end
 
 -- // [ THREADS ] \\ --
@@ -171,7 +172,7 @@ function point:nearby()
 end
 
 function onEnter(self)
-    lib.showTextUI('[E] - WapenDealer')
+    lib.showTextUI(locale('interaction'))
 end
 
 function onExit(self)

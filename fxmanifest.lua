@@ -6,6 +6,10 @@ description 'Simple weapon store script. Made for Xeaks scripts.'
 version '1.0'
 lua54 'yes'
 
+files {
+    'locales/*.json'
+}
+
 shared_scripts {
     '@ox_lib/init.lua',
     '@es_extended/imports.lua',

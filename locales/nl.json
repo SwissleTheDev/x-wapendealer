@@ -1,0 +1,22 @@
+{
+    "blackmarket_sell": "Blackmarket - Verkopen",
+    "buy_items": "Klik hier om een %s te kopen voor %s€",
+    "sell_items": "Klik hier om een %s te verkopen voor %s€",
+    "blackmarket_buy": "Blackmarket - kopen",
+    "sell": "Spullen verkopen",
+    "sell_desc": "Hier kan je spullen verkopen...",
+    "buy": "Dingen kopen?",
+    "buy_decs": "Wat illigale meuk",
+    "interact": "[E] - Blackmarket",
+    "title": "Blackmarket",
+    "error_framework": "Please enter a valid Framework type ESX or QB",
+    "dropmessage": "Tried to exploied '%s'",
+    "not_enough_money": "Je hebt niet genoeg geld opzak!",
+    "error_message": "Please enter a valid Notify type ESX, OX or QB",
+    "success_sell": "je hebt succesvol %s %s keer verkocht voor %s€",
+    "qb-banking_desc": "%s %s keer verkocht aan de blackmarket",
+    "item_bought": "je hebt succesvol %s gekocht voor %s€",
+    "qb-banking_buy_decs": "je hebt succesvol %s gekocht voor %s€",
+    "target": "Open blackmarket",
+    "error-interaction": "Please enter a valid Interaction type ox_target or qb-target"
+}

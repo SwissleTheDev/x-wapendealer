@@ -1,0 +1,22 @@
+{
+    "description": "Klik hier om aan een %s te kopen voor €%s ",
+    "buy_weapons": "Wapen inkoop",
+    "buy_weapons_desc": "je kan hier wapen kopen?",
+    "blackmarket_buy": "Blackmarket - kopen",
+    "weapondealer": "WapenDealer",
+    "sell_desc": "Hier kan je spullen verkopen...",
+    "buy_ammo": "Munutie inkoop",
+    "buy_ammo_desc": "Zou je hier kogels kunnnen kopen?",
+    "munition_buy": "Munutie inkoop",
+    "title": "Wapendealer ofz?",
+    "error_framework": "Please enter a valid Framework type ESX or QB",
+    "dropmessage": "Tried to exploied '%s'",
+    "interaction": "[E] - WapenDealer",
+    "not_enough_money": "Je hebt niet genoeg geld opzak!",
+    "error_message": "Please enter a valid Notify type ESX, OX or QB",
+    "qb-banking_desc": "%s %s keer verkocht aan de blackmarket",
+    "item_bought": "je hebt succesvol %s gekocht voor %s€",
+    "qb-banking_buy_decs": "je hebt succesvol %s gekocht voor %s€",
+    "target": "Open blackmarket",
+    "error-interaction": "Please enter a valid Interaction type ox_target or qb-target"
+}
