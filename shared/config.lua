@@ -21,7 +21,7 @@ Swl.blip = {
 
 Swl.MoneyType = 'black_money' -- money / black_money / bank
 
-Swl.Location = vec3(-718.1540, -1448.5582, 5.0026)
+Swl.Location = vec3(-718.1540, -1448.5582, 4.0026)
 Swl.Heading = 339.8603
 
 Swl.Npc = true
