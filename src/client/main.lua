@@ -1,6 +1,7 @@
 -- // [ VARIABLES ] \\ --
 Allowed = false
 PlayerLoaded = false
+PlayerData = ESX.PlayerData
 if Swl.Framework == 'ESX' then
     local PlayerData = {}
     ESX = exports["" .. Swl.FrameworkResource .. ""]:getSharedObject()
