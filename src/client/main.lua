@@ -1,10 +1,10 @@
 -- // [ VARIABLES ] \\ --
 Allowed = false
 PlayerLoaded = false
-PlayerData = ESX.PlayerData
 lib.locale()
 if Swl.Framework == 'ESX' then
-    local PlayerData = {}
+    PlayerData = {}
+    PlayerData = ESX.PlayerData
     ESX = exports["" .. Swl.FrameworkResource .. ""]:getSharedObject()
 elseif Swl.Framework == 'QB' then
     QBCore = exports["" .. Swl.FrameworkResource .. ""]:GetCoreObject()
