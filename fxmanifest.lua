@@ -3,18 +3,18 @@ game 'gta5'
 
 author 'jan Xeaks scripts'
 description 'Simple weapon store script. Made for Xeaks scripts.'
-version '1.0'
+version '1.1'
 lua54 'yes'
 
 files {
-    'locales/*.json'
+    'locales/en.json',
+    'locales/nl.json',
 }
 
 shared_scripts {
-    '@ox_lib/init.lua',
-    '@es_extended/imports.lua',
+    '@ox_lib/init.lua'
 }
 
-client_script 'src/client/*.lua'
-server_script 'src/server/*.lua'
-shared_script 'shared/*.lua'
+client_script 'src/client/main.lua'
+server_script 'src/server/main.lua'
+shared_script 'shared/config.lua'

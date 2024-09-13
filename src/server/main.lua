@@ -1,98 +1,102 @@
 -- // [ VARIABLES ] \\ --
-Location = nil
-ConfigSend = false
+local configSend = false
+local resource = GetCurrentGameName()
 lib.locale()
-if Swl.Framework == 'ESX' then
-    ESX = exports["es_extended"]:getSharedObject()
-elseif Swl.Framework == 'QB' then
-    QBCore = exports['qb-core']:GetCoreObject()
-else
-    print('' .. GetCurrentGameName() .. '' .. locale('error_framework'))
+
+local function getFrameworkObject()
+    if Swl.Framework == 'ESX' then
+        return exports["es_extended"]:getSharedObject()
+    elseif Swl.Framework == 'QB' then
+        return exports['qb-core']:GetCoreObject()
+    else
+        print(resource .. locale('error_framework'))
+        return nil
+    end
 end
 
+local function getPlayerBalance(xPlayer)
+    if Swl.Framework == 'ESX' then
+        return xPlayer.getAccount(Swl.MoneyType).money
+    elseif Swl.Framework == 'QB' then
+        return exports['qb-banking']:GetAccountBalance(Swl.MoneyType)
+    else
+        print(resource .. locale('error_framework'))
+        return 0
+    end
+end
+
+local function notifyPlayer(source, message, messageType)
+    if Swl.Notify == 'OX' then
+        TriggerClientEvent('ox_lib:notify', source, {
+            title = locale('title'),
+            description = message,
+            type = messageType
+        })
+    elseif Swl.Notify == 'ESX' then
+        Player.showNotification(messageType, message, 5000)
+    elseif Swl.Notify == 'QB' then
+        TriggerClientEvent('QBCore:Notify', source, message, messageType, 5000)
+    else
+        print(resource .. locale('error_framework'))
+    end
+end
+
+local function foundWeapon(weapon)
+    for _, v in pairs(Swl.ItemsTable) do
+        if v[weapon] then
+            return true
+        end
+    end
+    return false
+end
 
 -- // [ CALLBACKS ] \\ --
 lib.callback.register('swl-wapendealer:server:get:config', function()
-    if not ConfigSend then
+    if not configSend then
         return Swl
-    else
-        return DropPlayer(source,  locale('dropmessage', "swl-wapendealer:server:get:config"))
     end
 end)
 
 -- // [ EVENTS ] \\ --
-RegisterServerEvent('swl-wapendealer:server:buy', function(args)
-    Player = nil
-    if Swl.Framework == 'ESX' then
-        Player = ESX.GetPlayerFromId(source)
-         Balance = Player.getAccount(Swl.MoneyType).money
-    elseif Swl.Framework == 'QB' then
-        Player = QBCore.Functions.GetPlayer(source)
-         Balance = exports['qb-banking']:GetAccountBalance(Swl.MoneyType)
-    else
-        print('' .. GetCurrentGameName() .. '' .. locale('error_framework'))
-    end
-    local Weapon = args.weapon
-    local count = args.count
-    local price = args.price
-
-    if not Player then
-        return DropPlayer(source, locale('dropmessage', "swl-wapendealer:server:buy"))
-    end
-    if not Balance then
-        return DropPlayer(source, locale('dropmessage', "swl-wapendealer:server:buy"))
-    end
-    if not Weapon then
-        return DropPlayer(source, locale('dropmessage', "swl-wapendealer:server:buy"))
-    end
-    if not count then
-        return DropPlayer(source, locale('dropmessage', "swl-wapendealer:server:buy"))
-    end
-    if not price then
-        return DropPlayer(source, locale('dropmessage', "swl-wapendealer:server:buy"))
+RegisterNetEvent('swl-wapendealer:server:buy')
+AddEventHandler('swl-wapendealer:server:buy', function(args)
+    local src = source
+    local xPlayer = getFrameworkObject()
+    if not xPlayer then
+        return DropPlayer(src, locale('dropmessage', "swl-wapendealer:server:buy"))
     end
 
-    local dist = #(GetEntityCoords(GetPlayerPed(Player.source)) - Swl.Location)
-    if dist > 20 then
-        return DropPlayer(source, locale('dropmessage', "swl-wapendealer:server:buy"))
+    local balance = getPlayerBalance(xPlayer)
+    local weapon = args.weapon
+    if not weapon or not foundWeapon(weapon) then
+        return DropPlayer(src, locale('dropmessage', "swl-wapendealer:server:buy"))
     end
 
-    if Balance >= tonumber(price) or Balance == tonumber(price) then
+    local itemData = Swl.ItemsTable['weapons'][weapon] or Swl.ItemsTable['ammo'][weapon]
+    if not itemData then
+        return DropPlayer(src, locale('dropmessage', "swl-wapendealer:server:buy"))
+    end
+
+    local count = itemData.Count
+    local price = tonumber(itemData.Price)
+    local playerPed = GetPlayerPed(xPlayer.source)
+    local playerCoords = GetEntityCoords(playerPed)
+    local dist = #(playerCoords - Swl.Location)
+
+    if dist > 10 then
+        return DropPlayer(src, locale('dropmessage', "swl-wapendealer:server:buy"))
+    end
+
+    if balance >= price then
         if Swl.Framework == 'ESX' then
-            Player.removeAccountMoney(Swl.MoneyType, price)
-            exports.ox_inventory:AddItem(source, Weapon, count)
+            xPlayer.removeAccountMoney(Swl.MoneyType, price)
+            exports.ox_inventory:AddItem(src, weapon, count)
         elseif Swl.Framework == 'QB' then
-            exports['qb-inventory']:RemoveItem(source, Weapon, count, 1, false)
-            exports['qb-banking']:AddMoney(Swl.MoneyType, price, locale('qb-banking_buy_decs', Weapon, count))
-        else
-            print('' .. GetCurrentGameName() .. '' .. locale('error_framework'))
+            exports['qb-inventory']:RemoveItem(src, weapon, count, 1, false)
+            exports['qb-banking']:AddMoney(Swl.MoneyType, price, locale('qb-banking_buy_decs', weapon, count))
         end
-        if Swl.Notify == 'OX' then
-            TriggerClientEvent('ox_lib:notify', source, {
-                title = locale('title'),
-                description = locale('item_bought', Weapon, price),
-                type = 'success'
-            })
-        elseif Swl.Notify == 'ESX' then
-            Player.showNotification('success', locale('item_bought', Weapon, price), 5000)
-        elseif Swl.Notify == 'QB' then
-            TriggerClientEvent('QBCore:Notify', source, locale('item_bought', Weapon, price), 'success', 5000)
-        else
-            print('' .. GetCurrentGameName() .. '' .. locale('error_framework'))
-        end
+        notifyPlayer(src, locale('item_bought', weapon, price), 'success')
     else
-        if Swl.Notify == 'OX' then
-            return TriggerClientEvent('ox_lib:notify', source, {
-                title = locale('title'),
-                description = locale('not_enough_money'),
-                type = 'error'
-            })
-        elseif Swl.Notify == 'ESX' then
-           return Player.showNotification('error', locale('not_enough_money'), 5000)
-        elseif Swl.Notify == 'QB' then
-           return TriggerClientEvent('QBCore:Notify', source, locale('not_enough_money'), 'error', 5000)
-        else
-           return print('' .. GetCurrentGameName() .. '' .. locale('error_framework'))
-        end
+        notifyPlayer(src, locale('not_enough_money'), 'error')
     end
 end)
